@@ -16,7 +16,7 @@ export function getUser(req: Request, res: Response, next: NextFunction) {
     return next({
       status: 404,
       code: "NOT_FOUND",
-      message: "User not found"
+      message: "User not found",
     });
   }
 
@@ -31,7 +31,7 @@ export function createUser(req: Request, res: Response, next: NextFunction) {
       status: 400,
       code: "VALIDATION_ERROR",
       message: "Invalid request body",
-      details: errors
+      details: errors,
     });
   }
 
@@ -52,7 +52,7 @@ export function updateUser(req: Request, res: Response, next: NextFunction) {
     return next({
       status: 404,
       code: "NOT_FOUND",
-      message: "User not found"
+      message: "User not found",
     });
   }
 
@@ -68,7 +68,7 @@ export function deleteUser(req: Request, res: Response, next: NextFunction) {
     return next({
       status: 404,
       code: "NOT_FOUND",
-      message: "User not found"
+      message: "User not found",
     });
   }
 

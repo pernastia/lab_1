@@ -3,7 +3,7 @@ type User = {
   name: string;
 };
 
-let users: User[] = [];
+const users: User[] = [];
 let nextId = 1;
 
 export function getAllUsers() {
@@ -17,7 +17,7 @@ export function getUserById(id: number) {
 export function createUser(name: string) {
   const user: User = {
     id: nextId++,
-    name
+    name,
   };
 
   users.push(user);
@@ -27,8 +27,8 @@ export function createUser(name: string) {
 export function updateUser(id: number, name: string) {
   const user = users.find((u) => u.id === id);
   if (!user) return null;
-    user.name = name;
-    return user;
+  user.name = name;
+  return user;
 }
 
 export function deleteUser(id: number) {

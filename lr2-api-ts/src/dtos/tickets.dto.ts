@@ -1,9 +1,9 @@
 export interface CreateTicketRequestDTO {
-    subject: string;
-    status: string;
-    priority: string;
-    message: string;
-    author: string;
+  subject: string;
+  status: string;
+  priority: string;
+  message: string;
+  author: string;
 }
 
 export interface UpdateTicketRequestDTO {
@@ -13,10 +13,10 @@ export interface UpdateTicketRequestDTO {
 }
 
 export interface TicketResponseDTO {
-    id: number;
-    subject: string;
-    status: string;
-    priority: string;
-    message: string;
-    author: string;
+  id: number;
+  subject: string;
+  status: string;
+  priority: string;
+  message: string;
+  author: string;
 }

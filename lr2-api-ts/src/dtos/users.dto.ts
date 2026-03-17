@@ -1,12 +1,12 @@
 export interface CreateUserDTO {
-    name: string;
+  name: string;
 }
 
 export interface UpdateUserDTO {
-    name: string;
+  name: string;
 }
 
 export interface UserResponseDTO {
-    id: number;
-    name: string;
+  id: number;
+  name: string;
 }

@@ -1,43 +1,42 @@
 import { type TicketResponseDTO } from "../dtos/tickets.dto.js";
 
-let tickets: TicketResponseDTO[] = [];
+const tickets: TicketResponseDTO[] = [];
 let nextId = 1;
 
 export const getAll = (): TicketResponseDTO[] => {
-    return tickets;
+  return tickets;
 };
 
 export const getById = (id: number): TicketResponseDTO | undefined => {
-    return tickets.find(t => t.id === id);
+  return tickets.find((t) => t.id === id);
 };
 
-export const create = (ticket: Omit<TicketResponseDTO,"id">): TicketResponseDTO => {
+export const create = (
+  ticket: Omit<TicketResponseDTO, "id">,
+): TicketResponseDTO => {
+  const newTicket = { id: nextId++, ...ticket };
 
-    const newTicket = { id: nextId++, ...ticket };
+  tickets.push(newTicket);
 
-    tickets.push(newTicket);
-
-    return newTicket;
+  return newTicket;
 };
 
-export const update = (id: number, data: Omit<TicketResponseDTO,"id">) => {
+export const update = (id: number, data: Omit<TicketResponseDTO, "id">) => {
+  const index = tickets.findIndex((t) => t.id === id);
 
-    const index = tickets.findIndex(t => t.id === id);
+  if (index === -1) return undefined;
 
-    if(index === -1) return undefined;
+  tickets[index] = { id, ...data };
 
-    tickets[index] = { id, ...data };
-
-    return tickets[index];
+  return tickets[index];
 };
 
-export const remove = (id:number):boolean => {
+export const remove = (id: number): boolean => {
+  const index = tickets.findIndex((t) => t.id === id);
 
-    const index = tickets.findIndex(t => t.id === id);
+  if (index === -1) return false;
 
-    if(index === -1) return false;
+  tickets.splice(index, 1);
 
-    tickets.splice(index,1);
-
-    return true;
+  return true;
 };
