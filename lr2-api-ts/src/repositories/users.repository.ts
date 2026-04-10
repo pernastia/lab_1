@@ -1,40 +1,24 @@
-type User = {
-  id: number;
-  name: string;
-};
+import { all, get, run } from "../db/dbClient.js";
 
-const users: User[] = [];
-let nextId = 1;
-
-export function getAllUsers() {
-  return users;
+export async function getAllUsers() {
+  return all("SELECT * FROM Users ORDER BY id DESC");
 }
 
-export function getUserById(id: number) {
-  return users.find((u) => u.id === id);
+export async function getUserById(id: number) {
+  return get(`SELECT * FROM Users WHERE id = ${id}`);
 }
 
-export function createUser(name: string) {
-  const user: User = {
-    id: nextId++,
-    name,
-  };
-
-  users.push(user);
-  return user;
+export async function createUser(name: string) {
+  const result = await run(`INSERT INTO Users(name) VALUES('${name}')`);
+  return getUserById(result.lastID);
 }
 
-export function updateUser(id: number, name: string) {
-  const user = users.find((u) => u.id === id);
-  if (!user) return null;
-  user.name = name;
-  return user;
+export async function updateUser(id: number, name: string) {
+  await run(`UPDATE Users SET name = ? WHERE id = ?`, [name, id]);
+  return getUserById(id);
 }
 
-export function deleteUser(id: number) {
-  const index = users.findIndex((u) => u.id === id);
-  if (index === -1) return false;
-
-  users.splice(index, 1);
-  return true;
+export async function deleteUser(id: number) {
+  const result = await run(`DELETE FROM Users WHERE id = ${id}`);
+  return result.changes > 0;
 }

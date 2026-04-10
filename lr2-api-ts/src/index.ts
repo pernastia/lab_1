@@ -8,6 +8,8 @@ import ticketMessagesRoutes from "./routes/ticketMessages.routes.js";
 import logger from "./middleware/request-logging.middleware.js";
 import errorHandler from "./middleware/error-handler.middleware.js";
 
+import { initDb } from "./db/initDb.js";
+
 const app = express();
 app.use(express.json());
 app.use(logger);
@@ -20,4 +22,5 @@ app.get("/health", (req: Request, res: Response) => {
   res.status(200).json({ ok: true });
 });
 app.use(errorHandler);
+initDb();
 app.listen(3000, () => console.log("API started on http://localhost:3000"));

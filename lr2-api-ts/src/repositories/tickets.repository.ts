@@ -1,42 +1,59 @@
-import { type TicketResponseDTO } from "../dtos/tickets.dto.js";
+import { all, get, run } from "../db/dbClient.js";
 
-const tickets: TicketResponseDTO[] = [];
-let nextId = 1;
+export async function getAllTickets(query: any) {
+  let sql = `SELECT * FROM tickets WHERE 1=1`;
 
-export const getAll = (): TicketResponseDTO[] => {
-  return tickets;
-};
+  if (query.statusId) {
+    sql += ` AND statusId = ${query.statusId}`;
+  }
 
-export const getById = (id: number): TicketResponseDTO | undefined => {
-  return tickets.find((t) => t.id === id);
-};
+  if (query.userId) {
+    sql += ` AND authorId = ${query.userId}`;
+  }
 
-export const create = (
-  ticket: Omit<TicketResponseDTO, "id">,
-): TicketResponseDTO => {
-  const newTicket = { id: nextId++, ...ticket };
+  if (query.sort) {
+    sql += ` ORDER BY ${query.sort} ${query.order === "desc" ? "DESC" : "ASC"}`;
+  }
 
-  tickets.push(newTicket);
+  sql += ` LIMIT 10`;
 
-  return newTicket;
-};
+  return await all(sql);
+}
 
-export const update = (id: number, data: Omit<TicketResponseDTO, "id">) => {
-  const index = tickets.findIndex((t) => t.id === id);
+export async function getTicketById(id: number) {
+  const sql = `
+    SELECT 
+      t.*, 
+      s.name as statusName, 
+      u.userName as authorName
+    FROM tickets t
+    LEFT JOIN statuses s ON t.statusId = s.id
+    LEFT JOIN users u ON t.authorId = u.id
+    WHERE t.id = ?
+  `;
+  return await get(sql, [id]);
+}
 
-  if (index === -1) return undefined;
+export async function createTicket(data: any) {
+  const result = await run(`
+    INSERT INTO tickets(subject, message, priority, authorId, statusId)
+    VALUES('${data.subject}','${data.message}','${data.priority}',${data.authorId},${data.statusId})
+  `);
 
-  tickets[index] = { id, ...data };
+  return await get(`SELECT * FROM tickets WHERE id=${result.lastID}`);
+}
 
-  return tickets[index];
-};
+export async function updateTicket(id: number, data: any) {
+  await run(`
+    UPDATE tickets
+    SET subject='${data.subject}', message='${data.message}'
+    WHERE id=${id}
+  `);
 
-export const remove = (id: number): boolean => {
-  const index = tickets.findIndex((t) => t.id === id);
+  return await get(`SELECT * FROM tickets WHERE id=${id}`);
+}
 
-  if (index === -1) return false;
-
-  tickets.splice(index, 1);
-
-  return true;
-};
+export async function deleteTicket(id: number) {
+  const result = await run(`DELETE FROM tickets WHERE id=${id}`);
+  return result;
+}

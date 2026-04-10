@@ -73,3 +73,30 @@ curl "http://localhost:3000/api/tickets?author=ivan&page=1&pageSize=2&sortDir=de
 
 1.Download or clone the repository
 2.Open the "index.html" file in any browser
+
+## SQL Injection demo
+./data/app.db
+
+POST http://localhost:3000/api/users
+{ "name": "Artem" }
+
+GET http://localhost:3000/api/users/1
+
+PUT http://localhost:3000/api/users/1
+{ "name": "Ivan " }
+
+DELETE http://localhost:3000/api/users/1
+
+WHERE+ORDER+LIMIT: GET http://localhost:3000/api/tickets?userId=1&limit=5
+
+Users (1) → Tickets (N)
+Tickets (1) → Messages (N)
+
+Endpoint:
+GET /tickets
+POST /tickets
+GET /tickets/full
+GET /tickets/count
+
+Example bad input:
+?q=' OR 1=1 --

@@ -1,30 +1,33 @@
-const statuses: any[] = [];
-let nextId = 1;
+import { all, get, run } from "../db/dbClient.js";
 
-export function getAll() {
-  return statuses;
+export async function getAll() {
+  return await all(`SELECT * FROM statuses ORDER BY id DESC`);
 }
 
-export function getById(id: number) {
-  return statuses.find((s) => s.id === id);
+export async function getById(id: number) {
+  return await get(`SELECT * FROM statuses WHERE id=${id}`);
 }
 
-export function create(data: any) {
-  const status = { id: nextId++, ...data };
-  statuses.push(status);
-  return status;
+export async function create(data: any) {
+  const result = await run(`
+    INSERT INTO statuses(name)
+    VALUES('${data.name}')
+  `);
+
+  return await get(`SELECT * FROM statuses WHERE id=${result.lastID}`);
 }
 
-export function update(id: number, data: any) {
-  const index = statuses.findIndex((s) => s.id === id);
-  if (index === -1) return null;
-  statuses[index] = { id, ...data };
-  return statuses[index];
+export async function update(id: number, data: any) {
+  await run(`
+    UPDATE statuses
+    SET name='${data.name}'
+    WHERE id=${id}
+  `);
+
+  return await get(`SELECT * FROM statuses WHERE id=${id}`);
 }
 
-export function remove(id: number) {
-  const index = statuses.findIndex((s) => s.id === id);
-  if (index === -1) return false;
-  statuses.splice(index, 1);
+export async function remove(id: number) {
+  await run(`DELETE FROM statuses WHERE id=${id}`);
   return true;
 }

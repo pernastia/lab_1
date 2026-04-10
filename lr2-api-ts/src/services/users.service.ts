@@ -12,10 +12,6 @@ export function createUser(name: string) {
   return repo.createUser(name);
 }
 
-export function updateUser(id: number, name: string) {
-  return repo.updateUser(id, name);
-}
-
 export function deleteUser(id: number) {
   return repo.deleteUser(id);
 }

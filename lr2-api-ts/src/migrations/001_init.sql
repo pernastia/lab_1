@@ -1,0 +1,31 @@
+CREATE TABLE IF NOT EXISTS schema_migrations (
+  id TEXT PRIMARY KEY
+);
+
+CREATE TABLE IF NOT EXISTS users (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    name TEXT NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS statuses (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    name TEXT NOT NULL UNIQUE
+);
+
+CREATE TABLE IF NOT EXISTS tickets (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    subject TEXT NOT NULL,
+    priority TEXT NOT NULL,
+    message TEXT NOT NULL,
+    authorId INTEGER,
+    statusId INTEGER,
+    FOREIGN KEY(authorId) REFERENCES users(id),
+    FOREIGN KEY(statusId) REFERENCES statuses(id)
+);
+
+CREATE TABLE IF NOT EXISTS ticket_messages (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    ticketId INTEGER,
+    text TEXT NOT NULL,
+    FOREIGN KEY(ticketId) REFERENCES tickets(id) ON DELETE CASCADE
+);

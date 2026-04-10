@@ -1,23 +1,21 @@
-import * as ticketRepo from "../repositories/tickets.repository.js";
-import { type TicketResponseDTO } from "../dtos/tickets.dto.js";
+import * as repo from "../repositories/tickets.repository.js";
 
-export const getAllTickets = () => ticketRepo.getAll();
-
-export const getTicket = (id: number) => {
-  return ticketRepo.getById(id);
+export const getAllTickets = async (query: any) => {
+  return await repo.getAllTickets(query);
 };
 
-export const createTicket = (data: Omit<TicketResponseDTO, "id">) => {
-  return ticketRepo.create(data);
+export const getTicket = async (id: number) => {
+  return await repo.getTicketById(id);
 };
 
-export const updateTicket = (
-  id: number,
-  data: Omit<TicketResponseDTO, "id">,
-) => {
-  return ticketRepo.update(id, data);
+export const createTicket = async (data: any) => {
+  return await repo.createTicket(data);
 };
 
-export const removeTicket = (id: number) => {
-  return ticketRepo.remove(id);
+export const updateTicket = async (id: number, data: any) => {
+  return await repo.updateTicket(id, data);
+};
+
+export const removeTicket = async (id: number) => {
+  return await repo.deleteTicket(id);
 };
