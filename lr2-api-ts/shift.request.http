@@ -11,3 +11,6 @@ Content-Type: application/json
 
 ### get user by id
 GET http://localhost:3000/api/users/20
+
+### get top tickets with top commenter
+GET http://localhost:3000/api/tickets/top-users

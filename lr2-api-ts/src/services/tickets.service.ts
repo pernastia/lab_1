@@ -19,3 +19,7 @@ export const updateTicket = async (id: number, data: any) => {
 export const removeTicket = async (id: number) => {
   return await repo.deleteTicket(id);
 };
+
+export function getTop3TicketsWithTopUser() {
+  return repo.getTop3TicketsWithTopUser();
+}

@@ -96,3 +96,19 @@ export async function deleteTicket(
     next(error);
   }
 }
+
+export async function getTopTicketsWithTopUser(
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) {
+  try {
+    const data = await service.getTop3TicketsWithTopUser();
+
+    res.json({
+      data,
+    });
+  } catch (error) {
+    next(error);
+  }
+}

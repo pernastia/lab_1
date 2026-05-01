@@ -16,8 +16,8 @@ export async function getById(id: number) {
 
 export async function create(data: any) {
   const result = await run(`
-    INSERT INTO ticket_messages(ticketId, text)
-    VALUES(${data.ticketId}, '${data.text}')
+    INSERT INTO ticket_messages(ticketId, userId, text)
+    VALUES(${data.ticketId}, ${data.userId}, '${data.text}')
   `);
 
   return await get(`

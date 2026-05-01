@@ -8,6 +8,13 @@ export function validateCreateMessage(dto: any) {
     });
   }
 
+  if (typeof dto.userId !== "number") {
+    errors.push({
+      field: "userId",
+      message: "userId must be a number",
+    });
+  }
+
   if (typeof dto.text !== "string" || dto.text.trim().length < 2) {
     errors.push({
       field: "text",
